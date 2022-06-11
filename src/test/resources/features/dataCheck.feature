@@ -17,5 +17,5 @@ Feature: check data using gui, api and db
     Then the result should equal to "<count>"
     Examples:
       | name    | count |
-      | Muhtar  | : 25  |
-      | Jessica | : 4   |
+      | Muhtar  | 25    |
+      | Jessica | 4     |

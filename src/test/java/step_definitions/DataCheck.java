@@ -112,11 +112,11 @@ public class DataCheck extends MainPage {
     public void theResultShouldEqualToCount(String string) {
         switch (env){
             case "webpage":
-                Assert.assertEquals(string,totalCount.getText());
+                Assert.assertEquals(string,totalCount.getText().substring(2));
                 break;
 
             case "api":
-                Assert.assertEquals(string,response.path("totalElement"));
+                Assert.assertEquals(Integer.valueOf(string),response.path("totalElement"));
                 break;
 
             case "db":

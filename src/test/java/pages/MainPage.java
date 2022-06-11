@@ -23,5 +23,18 @@ public class MainPage {
         gender = Driver.get().findElement(By.xpath("//td[contains(text()," + "'" + index + "'" + ")]/following-sibling::td[3]"));
     }
 
+    @FindBy (xpath = "//input[@id=\"name\"]")
+    public WebElement inputBar;
+
+    @FindBy (xpath = "//button[@id=\"search\"]")
+    public WebElement searchButton;
+
+    @FindBy (xpath = "//span[@id=\"total_up_count\"]")
+    public WebElement totalCount;
+
+
+
+
+
 
 }

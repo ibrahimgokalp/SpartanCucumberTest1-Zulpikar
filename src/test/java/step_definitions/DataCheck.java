@@ -17,6 +17,8 @@ public class DataCheck extends MainPage {
     Response response = null;
     Map<String, Object> dbMap = null;
 
+    int count = 0;
+
     @Given("I goto {string}")
     public void i_goto_webpage(String string) {
         env = string;
@@ -74,4 +76,52 @@ public class DataCheck extends MainPage {
 
     }
 
+    @When("I search by {string}")
+    public void i_search_by(String string) {
+
+        switch (env){
+            case "webpage":
+                Driver.get().get(ConfigurationReader.get("url"));
+                inputBar.sendKeys(string);
+                searchButton.click();
+                break;
+
+            case "api":
+                response = RestAssured.given().accept(ContentType.JSON)
+                        .and().queryParams("nameContains",string)
+                        .when().get(ConfigurationReader.get("api_url") + "/api/spartans/search");
+                break;
+
+            case "db":
+                DBUtils.createConnection();
+                String query = "SELECT SPARTAN_ID,NAME,GENDER,PHONE\n" +
+                        "FROM SPARTANS\n" +
+                        "WHERE NAME = \'" + string + "\'" ;
+                count = DBUtils.getQueryResultList(query).size();
+                break;
+
+
+
+        }
+    }
+
+
+
+
+    @Then("the result should equal to {string}")
+    public void theResultShouldEqualToCount(String string) {
+        switch (env){
+            case "webpage":
+                Assert.assertEquals(string,totalCount.getText());
+                break;
+
+            case "api":
+                Assert.assertEquals(string,response.path("totalElement"));
+                break;
+
+            case "db":
+                Assert.assertEquals(string,String.valueOf(count));
+                break;
+        }
+    }
 }

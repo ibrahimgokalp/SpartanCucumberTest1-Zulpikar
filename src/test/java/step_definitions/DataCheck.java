@@ -28,7 +28,7 @@ public class DataCheck extends MainPage {
     @When("I provide spartan {int}")
     public void i_provide_spartan(Integer int1) {
 
-        switch (env){
+        switch (env) {
             case "webpage":
                 getByIndex(int1);
                 break;
@@ -50,13 +50,12 @@ public class DataCheck extends MainPage {
         }
 
 
-
     }
 
     @Then("{string} and {string} should match")
     public void and_should_match(String string, String string2) {
 
-        switch (env){
+        switch (env) {
 
             case "webpage":
                 Assert.assertEquals(string, name.getText());
@@ -79,7 +78,7 @@ public class DataCheck extends MainPage {
     @When("I search by {string}")
     public void i_search_by(String string) {
 
-        switch (env){
+        switch (env) {
             case "webpage":
                 Driver.get().get(ConfigurationReader.get("url"));
                 inputBar.sendKeys(string);
@@ -88,7 +87,7 @@ public class DataCheck extends MainPage {
 
             case "api":
                 response = RestAssured.given().accept(ContentType.JSON)
-                        .and().queryParams("nameContains",string)
+                        .and().queryParams("nameContains", string)
                         .when().get(ConfigurationReader.get("api_url") + "/api/spartans/search");
                 break;
 
@@ -96,32 +95,70 @@ public class DataCheck extends MainPage {
                 DBUtils.createConnection();
                 String query = "SELECT SPARTAN_ID,NAME,GENDER,PHONE\n" +
                         "FROM SPARTANS\n" +
-                        "WHERE NAME = \'" + string + "\'" ;
+                        "WHERE NAME = \'" + string + "\'";
                 count = DBUtils.getQueryResultList(query).size();
                 break;
 
 
-
         }
     }
-
-
 
 
     @Then("the result should equal to {string}")
     public void theResultShouldEqualToCount(String string) {
-        switch (env){
+        switch (env) {
             case "webpage":
-                Assert.assertEquals(string,totalCount.getText().substring(2));
+                Assert.assertEquals(string, totalCount.getText().substring(2));
                 break;
 
             case "api":
-                Assert.assertEquals(Integer.valueOf(string),response.path("totalElement"));
+                Assert.assertEquals(Integer.valueOf(string), response.path("totalElement"));
                 break;
 
             case "db":
-                Assert.assertEquals(string,String.valueOf(count));
+                Assert.assertEquals(string, String.valueOf(count));
                 break;
         }
     }
+
+    @When("I update spartan no {int}")
+    public void i_update_spartan_no(Integer int1) {
+
+        switch (env) {
+            case "webpage":
+                Driver.get().get(ConfigurationReader.get("url"));
+                update.click();
+                updateName.clear();
+                updateName.sendKeys("Michle");
+                updateButton.click();
+                break;
+
+            case "api":
+                Map<String, Object> patchMap = new HashMap<>();
+                patchMap.put("name", "Michel");
+                response = RestAssured.given().accept(ContentType.JSON)
+                        .and().contentType(ContentType.JSON)
+                        .body(patchMap)
+                        .and().pathParam("id", 107)
+                        .when().patch(ConfigurationReader.get("api_url") + "/api/spartans/{id}");
+                break;
+
+
+        }
+    }
+
+    @Then("I get success message")
+    public void i_get_success_message() {
+        switch (env) {
+            case "webpage":
+                Assert.assertEquals("Successfully Updated Data!", successMsg.getText());
+                break;
+
+            case "api":
+                Assert.assertEquals(204, response.statusCode());
+                break;
+
+        }
+    }
+
 }

@@ -10,7 +10,6 @@ Feature: check data using gui, api and db
       | 107 | Mac     | Male   |
       | 119 | Jessica | Female |
 
-  @wip
   Scenario Outline: search by name
     Given I goto "db"
     When I search by "<name>"
@@ -19,3 +18,9 @@ Feature: check data using gui, api and db
       | name    | count |
       | Muhtar  | 25    |
       | Jessica | 4     |
+
+  @wip
+  Scenario: partialy update a spartan
+    Given I goto "api"
+    When I update spartan no 107
+    Then I get success message

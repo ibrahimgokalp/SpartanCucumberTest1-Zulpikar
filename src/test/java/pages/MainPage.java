@@ -32,6 +32,22 @@ public class MainPage {
     @FindBy (xpath = "//span[@id=\"total_up_count\"]")
     public WebElement totalCount;
 
+    @FindBy (xpath = "//td[contains(text(),\"107\")]/following-sibling::td[5]/a")
+    public WebElement update;
+
+    @FindBy (xpath = "//input[@id=\"name\"]")
+    public WebElement updateName;
+
+    @FindBy (xpath = "//input[@value=\" Update \"]")
+    public WebElement updateButton;
+
+    @FindBy (xpath = "//div[@role=\"alert\"]")
+    public WebElement successMsg;
+
+
+
+
+
 
 
 

@@ -3,7 +3,7 @@ Feature: check data using gui, api and db
 
   @wip
   Scenario Outline: check spartan name and gender
-    Given I goto webpage
+    Given I goto "db"
     When I provide spartan <id>
     Then "<name>" and "<gender>" should match
     Examples:

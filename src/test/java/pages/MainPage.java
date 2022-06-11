@@ -17,7 +17,7 @@ public class MainPage {
     }
 
     public static void getByIndex(int index){
-
+        Driver.get().get(ConfigurationReader.get("url"));
         name = Driver.get().findElement(By.xpath("//td[contains(text()," + "'" + index + "'" + ")]/following-sibling::td[1]"));
         phone = Driver.get().findElement(By.xpath("//td[contains(text()," + "'" + index + "'" + ")]/following-sibling::td[2]"));
         gender = Driver.get().findElement(By.xpath("//td[contains(text()," + "'" + index + "'" + ")]/following-sibling::td[3]"));
